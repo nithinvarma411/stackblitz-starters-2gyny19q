@@ -36,8 +36,12 @@ const express = require('express');
 const { resolve } = require('path');
 
 const app = express();
-const port = 3010;
+const port = 3000;
 app.use(express.json());
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('data.json',"utf8"))
+console.log(data)
+
 
 app.use(express.static('static'));
 
@@ -47,7 +51,7 @@ app.get('/', (req, res) => {
 
 app.post('/students/above-threshold', (req, res) => {
   const { threshold } = req.body;
-  const students = require('./data.json').filter((student) => student.total > threshold);
+  const students = data.filter((student) => student.total > threshold);
   if (students.length === 0) {
     return res.json({ count: 0, students: [] });
   }
